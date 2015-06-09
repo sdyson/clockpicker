@@ -158,7 +158,7 @@
 				}).appendTo(this.amPmBlock);
 				
 		}
-		
+
 		if (! options.autoclose) {
 			// If autoclose is not setted, append a button
 			$('<button type="button" class="btn btn-sm btn-default btn-block clockpicker-button">' + options.donetext + '</button>')
@@ -203,14 +203,17 @@
 			for (i = 0; i < 24; i += 1) {
 				tick = tickTpl.clone();
 				radian = i / 6 * Math.PI;
-				var inner = i > 0 && i < 13;
+				var inner = i > 12 || i < 1;
 				radius = inner ? innerRadius : outerRadius;
 				tick.css({
 					left: dialRadius + Math.sin(radian) * radius - tickRadius,
 					top: dialRadius - Math.cos(radian) * radius - tickRadius
 				});
-				if (inner) {
+				if (!inner) {
 					tick.css('font-size', '120%');
+				}
+				else {
+					tick.css('font-size', '80%');
 				}
 				tick.html(i === 0 ? '00' : i);
 				hoursView.append(tick);
@@ -551,7 +554,7 @@
 			isHours = view === 'hours',
 			unit = Math.PI / (isHours ? 6 : 30),
 			radian = value * unit,
-			radius = isHours && value > 0 && value < 13 ? innerRadius : outerRadius,
+			radius = isHours && value > 0 && value < 13 ? outerRadius : innerRadius,
 			x = Math.sin(radian) * radius,
 			y = - Math.cos(radian) * radius,
 			self = this;
@@ -611,7 +614,7 @@
 				if (value === 12) {
 					value = 0;
 				}
-				value = inner ? (value === 0 ? 12 : value) : value === 0 ? 0 : value + 12;
+				value = inner ? value === 0 ? 0 : value + 12 : (value === 0 ? 12 : value);
 			} else {
 				if (roundBy5) {
 					value *= 5;
